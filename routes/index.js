@@ -35,4 +35,9 @@ router.get('/quizzes/randomcheck/:quizId(\\d+)',         quizController.randomch
 
 
 
+// Pagina de ayuda
+router.get('/help', function (req, res, next) {
+    res.render('help');
+})
+
 module.exports = router;
