@@ -1,5 +1,5 @@
 node_modules
 quiz.sqlite
 .env
-.idea
+.idea/
 npm-debug.log

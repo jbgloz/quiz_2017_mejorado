@@ -243,13 +243,11 @@ exports.randomPlay = function (req, res, next) {
 exports.randomcheck = function (req, res, next) {
 
     var answer = req.query.answer || "";
-    var score = req.session.score;
     req.session.pregs.push(req.quiz.id);
 
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
     if (result){
         req.session.score = req.session.prevscore + 1;
-        score = req.session.score;
     }else {
         req.session.pregs = [-1];
         req.session.score = 0;
@@ -260,6 +258,6 @@ exports.randomcheck = function (req, res, next) {
         quiz: req.quiz,
         result: result,
         answer: answer,
-        score: score
+        score: req.session.score
     });
 };
