@@ -5,6 +5,7 @@ var quizController = require('../controllers/quiz_controller');
 var tipController = require('../controllers/tip_controller');
 var userController = require('../controllers/user_controller');
 var sessionController = require('../controllers/session_controller');
+var playController = require('../controllers/play_controller');
 
 //-----------------------------------------------------------
 
@@ -51,6 +52,7 @@ router.get('/author', function (req, res, next) {
 router.param('quizId', quizController.load);
 router.param('userId', userController.load);
 router.param('tipId',  tipController.load);
+router.param('partidaId',  playController.load);
 
 
 // Definición de rutas de sesion
@@ -130,6 +132,14 @@ router.put('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/accept',
 router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
     sessionController.loginRequired,
     tipController.destroy);
+
+//Partidas jugadas
+router.get('/partidas',
+    sessionController.loginRequired,
+    playController.index);
+router.delete('/partidas/:partidaId(\\d+)',
+    sessionController.loginRequired,
+    playController.destroy);
 
 
 module.exports = router;

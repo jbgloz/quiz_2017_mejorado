@@ -68,6 +68,77 @@ a {
     margin: 0px 5px;
 }
 
+/* ------------------------- */
+
+#lista_partidas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#lista_partidas tr {
+    background-color: #e5e5e5;
+
+    border: 1px dotted #636363;
+    border-radius: 5px;
+}
+
+#lista_partidas tr:nth-child(even) {
+    background-color: #cfcfcf
+}
+
+#lista_partidas td {
+    padding: 3px;
+    margin: 2px;
+    border: 1px dotted #636363;
+    border-radius: 5px;
+}
+
+#lista_partidas tr td:nth-child(1) {
+    vertical-align: top;
+    text-align: center;
+}
+
+#lista_partidas tr td:nth-child(2) {
+    vertical-align: top;
+    text-align: center;
+}
+
+#lista_partidas tr td:nth-child(3) {
+    vertical-align: top;
+    text-align: center;
+}
+#lista_partidas tr td:nth-child(4) {
+    vertical-align: bottom;
+    text-align: center;
+}
+
+
+#lista_partidas th {
+    padding: 3px;
+    margin: 2px;
+}
+
+#lista_partidas tr th:nth-child(1) {
+    text-align: center;
+}
+
+#lista_partidas tr th:nth-child(2) {
+    vertical-align: top;
+    text-align: center;
+}
+
+#lista_partidas tr th:nth-child(3) {
+    vertical-align: top;
+    text-align: center;
+}
+
+#lista_partidas tr th:nth-child(4) {
+    vertical-align: bottom;
+    text-align: center;
+}
+
+
+
 #flashinfo {
     width: auto;
     border: 2px solid blue;

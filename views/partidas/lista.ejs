@@ -1,0 +1,51 @@
+<div class="right">
+    <form method="get" action="/partidas">
+        <input type="text" name="search" value="<%= locals.search || '' %>" placeholder="partida a buscar" autocomplete="off" />
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+
+<h1>
+    <%= title || "Partidas" %>:
+</h1>
+
+<table id="lista_partidas">
+    <th>
+        Fecha
+    </th>
+    <th>
+        Puntuación
+    </th>
+    <% if (session.user && session.user.isAdmin) { %>
+    <th>
+        Usuario
+    </th>
+    <% } %>
+    <th>
+        Opciones
+    </th>
+    <% for (var i in partidas) { %>
+    <% var partida = partidas[i]; %>
+    <tr>
+        <td>
+            <%= partida.date.getHours()+":"+partida.date.getMinutes()+" "+partida.date.toDateString() %>
+        </td>
+        <td>
+            <%= partida.score %>
+        </td>
+
+        <% if (session.user && session.user.isAdmin) { %>
+        <td>
+            <%= partida.user0.username %>
+        </td>
+        <% } %>
+
+        <td>
+            <a href="/partidas/<%= partida.id %>?_method=DELETE"
+               onClick="return confirm('Borrar: <%= partida.date.getHours()+":"+partida.date.getMinutes()+" "+partida.date.toDateString() %>');">
+                <button>borrar</button>
+            </a>
+        </td>
+    </tr>
+    <% } %>
+</table>
