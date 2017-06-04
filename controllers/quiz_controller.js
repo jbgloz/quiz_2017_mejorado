@@ -262,6 +262,18 @@ exports.randomPlay = function (req, res, next) {
                 req.session.pregs = [-1];
                 req.session.score = 0;
                 req.session.prevscore = 0;
+                if(req.session.user) {
+                    var jugada = models.Partidas.build({
+                        userId: req.session.user.id,
+                        score: score,
+                        date: new Date()
+                    });
+                    jugada.save({fields: ["userId", "score", "date"]})
+                        .catch(function (error) {
+                            req.flash('error', 'Error al guardar la partida: ' + error.message);
+                            next(error);
+                        });
+                }
                 res.render('quizzes/random_nomore', {
                     score: score
                 });
@@ -284,6 +296,18 @@ exports.randomcheck = function (req, res, next) {
     if (result){
         req.session.score = req.session.prevscore + 1;
     }else {
+        if(req.session.user) {
+            var jugada = models.Partidas.build({
+                userId:req.session.user.id,
+                score: req.session.score,
+                date: new Date()
+            });
+            jugada.save({fields: ["userId", "score", "date"]})
+                .catch(function (error) {
+                    req.flash('error', 'Error al guardar la partida: ' + error.message);
+                    next(error);
+                });
+        }
         req.session.pregs = [-1];
         req.session.score = 0;
         req.session.prevscore = 0;

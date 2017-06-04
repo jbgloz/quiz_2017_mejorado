@@ -74,6 +74,10 @@ exports.index = function (req, res, next) {
         })
         .then(function (partidas) {
             console.log('Pasa la segunda promesa');
+            if(!partidas[0]){
+                req.flash('error', 'No hay ninguna partida registrada');
+                res.render('index.ejs');
+            }
             for(valor in partidas[0].dataValues)
             console.log(valor);
 
