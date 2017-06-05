@@ -35,7 +35,7 @@ exports.index = function (req, res, next) {
     var title = "Partidas jugadas por "+req.session.user.username;
 
     if(req.session.user.isAdmin){
-        countOptions = {};
+        countOptions = {where: {}};
         title = "Partidas jugadas";
         console.log('Admin detectado');
     }
@@ -45,7 +45,7 @@ exports.index = function (req, res, next) {
     if (search) {
         var search_like = "%" + search.replace(/ +/g,"%") + "%";
 
-        countOptions.where.question = { $like: search_like };
+        countOptions.where.score = { $like: search_like };
     }
 
     models.Partidas.count(countOptions)
