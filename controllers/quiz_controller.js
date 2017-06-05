@@ -295,6 +295,9 @@ exports.randomPlay = function (req, res, next) {
 exports.randomcheck = function (req, res, next) {
 
     var answer = req.query.answer || "";
+    req.session.score = req.session.score || 0;
+    req.session.prevscore = req.session.prevscore || 0;
+    req.session.pregs = req.session.pregs || [];
     req.session.pregs.push(req.quiz.id);
 
     var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
