@@ -227,3 +227,77 @@ exports.check = function (req, res, next) {
         answer: answer
     });
 };
+
+// GET /quizzes/randomPlay
+exports.randomPlay = function (req, res, next) {
+
+    var answer = req.query.answer || '';
+    var empty = false;
+    req.session.score = req.session.score || 0;
+    req.session.prevscore = req.session.prevscore || 0;
+    req.session.pregs = req.session.pregs || [-1];
+    var findOptions = {};
+    var opcion = {
+        id: {
+            $notIn: req.session.pregs
+        }
+    };
+
+    models.Quiz.count({where: opcion})
+        .then(function (count) {
+            if (count === 0) {
+                empty = true;
+            }
+            findOptions.offset = Math.floor(Math.random() * count);
+            findOptions.limit = +1;
+            findOptions.where = opcion;
+            console.log(count);
+            return models.Quiz.findAll(findOptions);
+        })
+        .then(function (quiz) {
+            if (!empty){
+                req.session.prevscore = req.session.score;
+                res.render('quizzes/random_play', {
+                    quiz: quiz[0],
+                    answer: answer,
+                    score: req.session.score
+                });
+            }else {
+                var score = req.session.score;
+                req.session.pregs = [-1];
+                req.session.score = 0;
+                req.session.prevscore = 0;
+                res.render('quizzes/random_nomore', {
+                    score: score
+                });
+            }
+        })
+        .catch(function (error) {
+            console.log('error+ '+error);
+            next(error);
+        });
+
+};
+
+// GET /randomcheck
+exports.randomcheck = function (req, res, next) {
+
+    var answer = req.query.answer || "";
+    req.session.pregs.push(req.quiz.id);
+
+    var result = answer.toLowerCase().trim() === req.quiz.answer.toLowerCase().trim();
+    if (result){
+        req.session.score = req.session.prevscore + 1;
+    }else {
+        req.session.pregs = [-1];
+        req.session.score = 0;
+        req.session.prevscore = 0;
+    }
+
+    res.render('quizzes/random_result', {
+        quiz: req.quiz,
+        result: result,
+        answer: answer,
+        score: req.session.score
+    });
+};

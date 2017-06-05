@@ -131,5 +131,14 @@ router.delete('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)',
     sessionController.loginRequired,
     tipController.destroy);
 
+router.get('/quizzes/randomplay',          quizController.randomPlay);
+router.get('/quizzes/randomcheck/:quizId(\\d+)',         quizController.randomcheck);
+
+
+
+// Pagina de ayuda
+router.get('/help', function (req, res, next) {
+    res.render('help');
+})
 
 module.exports = router;
