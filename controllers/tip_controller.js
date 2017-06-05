@@ -40,7 +40,8 @@ exports.create = function (req, res, next) {
     var tip = models.Tip.build(
         {
             text: req.body.text,
-            QuizId: req.quiz.id
+            QuizId: req.quiz.id,
+            AuthorId: req.session.user.id
         });
 
     tip.save()
@@ -86,13 +87,21 @@ exports.accept = function (req, res, next) {
 
 // DELETE /quizzes/:quizId/tips/:tipId
 exports.destroy = function (req, res, next) {
+    var isAdmin  = req.session.user.isAdmin;
+    var isAuthor = req.quiz.AuthorId === req.session.user.id;
+    var isAuthor2 = req.tip.AuthorId === req.session.user.id;
 
-    req.tip.destroy()
-    .then(function () {
-        req.flash('success', 'Pista eliminada con éxito.');
-        res.redirect('/quizzes/' + req.params.quizId);
-    })
-    .catch(function (error) {
-        next(error);
-    });
+    if (isAdmin || isAuthor || isAuthor2) {
+        req.tip.destroy()
+            .then(function () {
+                req.flash('success', 'Pista eliminada con éxito.');
+                res.redirect('/quizzes/' + req.params.quizId);
+            })
+            .catch(function (error) {
+                next(error);
+            });
+    } else {
+        console.log('Operación prohibida: El usuario logeado no es el autor del quiz, ni un administrador.');
+        res.send(403);
+    }
 };
